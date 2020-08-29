@@ -212,9 +212,25 @@ function saveName(text){
 
 ## 2. How to use
 
-// 계정 등록
+### Register account
 
-// 계정 삭제
+```
+1. Write your name in input box.
+2. Press the enter button
+```
+
+### Delete account 
+
+```
+1. Press right click with the mouse.
+2. Click the inspect button (검사버튼)
+3. Click the application menu.
+4. Click local Storage.
+5. Click clear All button.
+6. account will delete!
+```
+
+
 <br>
 <br>
 
