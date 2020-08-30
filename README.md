@@ -1,5 +1,16 @@
 # momento_js
 
+## 0. features
+
+* clock
+* user name
+* to do list
+* background
+* weather information
+
+<br>
+<br>
+
 ## 1. How to make 
 
 We used divide & conquer rule. So, we divided clock, .etc js file and join files in index.html 
@@ -488,6 +499,132 @@ define keyframes fadeIn and gives animation in bgImage class.
 
 ### 1-5. weather by one geolocation (two API)
  
+(index.html)
+1. Add weather container.
+
+```
+ <spanc class="js-weather"></spanc>
+```
+
+<br>
+
+2. Connect with weather.js
+
+```
+<script src="weather.js"></script>
+```
+<br>
+<br>
+
+(weather.js)
+1. connect .js-weather (using class) and define API_KEY and COORDS.
+
+```
+const weather = document.querySelector(".js-weather");
+
+const API_KEY = "8159d8674829d03f2989f98d696a8099";
+const COORDS = 'coords';
+```
+
+<br>
+
+2. We want to initialize of getting coord information. So we defined function init() and called loadCoords() function which gives Coord information.
+
+```
+function init() {
+    loadCoords();
+}
+
+init();
+```
+
+<br>
+
+
+3. define loadCoords which get by localStorage.
+if we don't have loadedCoords information we will call askForCoords function for getting Coordinate information, else we will get weather use this coord information
+
+```
+function loadCoords() {
+    const loadedCoords = localStorage.getItem(COORDS);
+    if(loadedCoords === null){
+        askForCoords();
+    }
+    else{
+        //get weather
+        const parseCoords = JSON.parse(loadedCoords);
+        getWeather(parseCoords.latitude, parseCoords.longitude);
+    }
+}
+```
+
+<br>
+
+
+4. Define askForCoords to get Current Position. We will use navigator.
+
+```
+function askForCoords() {
+    navigator.geolocation.getCurrentPosition(handleGeoSuccess, handleGeoError);
+}
+```
+
+<br>
+
+
+5. Define handleGeoSuccess and handleGeoError. If handleGeoSuccess operates, we will define coordsObj to get coordinate information and save Coords and call getWeather function.
+
+```
+function handleGeoSuccess(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const coordsObj = {
+        // 자동으로 key값이 같게 저장됨
+        latitude,
+        longitude
+    };
+    saveCoords(coordsObj);
+    getWeather(latitude,longitude);
+}
+
+function handleGeoError(){
+    console.log("Can't access geo location");
+}
+```
+
+<br>
+
+6. Define saveCoords function, which saved string type.
+
+```
+function saveCoords(coordsObj) {
+    localStorage.setItem(COORDS, JSON.stringify(coordsObj));
+}
+```
+
+<br>
+
+7. Define getWeather function, which get temperature and place info. 
+
+* fetch().then : To proceed after the fetch has been completed.
+
+```
+function getWeather(lat, lng){
+    // fetch . then -> fetch가 다 된 후 진행되도록 하기 위함
+    fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${API_KEY}&units=metric`
+        ).then(function(response){
+            return response.json();
+        })
+        .then(function(json) {
+            const temperature = json.main.temp;
+            const place = json.name;
+            weather.innerHTML = `${temperature} @ ${place}`;
+        })
+
+}
+```
+
 <br>
 <br>
 <br>
