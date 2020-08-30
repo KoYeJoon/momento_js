@@ -193,6 +193,181 @@ function saveName(text){
 
 ### 1-3. To Do List
 
+(index.html)
+
+1.  make toDo-format
+
+```
+<form class = "js-toDoForm">
+            <input type="text" placeholder = "Write a to do " />
+</form>
+<ul class = "js-toDoList">
+</ul>
+```
+
+<br>
+
+2. connect with todo.js
+```
+<script src="todo.js"></script>
+```
+
+<br>
+
+3. add meta charset because of emoji.
+
+```
+<meta charset="utf-8" />
+```
+
+<br>
+<br>
+
+(todo.js)
+
+1. connect with html file and define toDos, toDo array.
+
+```
+const toDoForm = document.querySelector(".js-toDoForm"),
+    toDoInput = toDoForm.querySelector("input"),
+    toDoList = document.querySelector(".js-toDoList");
+
+const TODOS_LS = `toDos`;
+
+let toDos = [];
+```
+
+<br>
+
+2. We want to initialize of loading toDos. So we defined function init() and called loadToDo function which gives toDo list information.
+
+```
+function init()
+{
+    loadToDos();
+    toDoForm.addEventListener("submit", handleSubmit);
+}
+
+init();
+```
+
+<br>
+
+3. If localStorage doesn't null, show toDo list.
+
+* JSON.parse(json item) : json->array
+
+
+```
+function loadToDos() {
+    const loadedToDos = localStorage.getItem(TODOS_LS);
+     // always show so we don't have to do if toDos ===null
+    if(loadedToDos !== null){
+       // json -> array
+       const parsedToDos = JSON.parse(loadedToDos);
+       parsedToDos.forEach(function(toDo) {
+           paintToDo(toDo.text);
+       });
+    }
+```
+
+<br>
+
+4. If we submit, we prevent refresh, and paint currentValue. Last, we initialize blank space.
+
+```
+function handleSubmit(event) {
+    event.preventDefault();
+    const currentValue = toDoInput.value;
+    paintToDo(currentValue);
+    //seems like submit
+    toDoInput.value = "";
+}
+```
+
+<br>
+
+
+5. make painting function.
+ we make list in html file. so, we use document.createElement. and deleteButton will be ❌ shape. 
+ we have to define Id because we have child id when we delete. 
+then, we can make list using by appendChild function. 
+and push text contents and id information in toDos array.
+last, we save using by saveToDos function
+
+
+(cf) span seems like div tag..
+
+
+```
+function paintToDo(text) {
+    const li = document.createElement("li");
+    const delBtn = document.createElement("button");
+    delBtn.innerText = "❌";
+    delBtn.addEventListener("click", deleteToDo);
+    const span = document.createElement("span");
+    const newId = toDos.length+1;
+
+    span.innerText = text;
+    //father에 붙여주기 위함
+    li.appendChild(delBtn);
+    li.appendChild(span);
+    li.id = newId;
+
+    toDoList.appendChild(li);
+    const toDoObj = {
+        text : text,
+        id : newId,
+    };
+    toDos.push(toDoObj);
+    saveToDos();
+}
+
+```
+
+<br>
+
+
+6. make saveToDos for save ToDo information.
+
+*JSON.stringify(array) : array->JSON
+
+```
+function saveToDos() {
+    // array->json
+    localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
+}
+```
+
+
+<br>
+
+
+7. make deleteToDo(event) function.
+define btn which is event target button.
+define li which is btn parentNode . this will give Id.
+and delete 'li' toDoList in html file.
+define new ToDos(cleanToDos) which remained in list.
+update toDos for cleanToDos.
+last, save new ToDos.
+
+```
+function deleteToDo(event){
+    // console.log(event.target.parentNode);
+    // delete child element mdn
+    const btn = event.target;
+    const li = btn.parentNode;
+    toDoList.removeChild(li);
+    const cleanToDos = toDos.filter(function(toDo){
+        //string -> int
+        return toDo.id !== parseInt(li.id);
+    });
+    toDos = cleanToDos;
+    saveToDos();
+}
+```
+
+
 <br>
 <br>
 
@@ -219,6 +394,9 @@ function saveName(text){
 2. Press the enter button
 ```
 
+<br>
+<br>
+
 ### Delete account 
 
 ```
@@ -230,6 +408,31 @@ function saveName(text){
 6. account will delete!
 ```
 
+
+<br>
+<br>
+
+
+### Add ToDo list
+
+```
+1. add text in text box(Write a to do).
+2. Click Enter button in your keyboard.
+3. Added!
+```
+
+<br>
+<br>
+
+
+### Delete ToDo List
+
+
+```
+1. Put the cursor over the button which is next to the list you want to delete.
+2. Click X button.
+3. Deleted!
+```
 
 <br>
 <br>
