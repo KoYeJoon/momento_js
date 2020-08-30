@@ -374,6 +374,113 @@ function deleteToDo(event){
 
 ### 1-4. image background
 
+(index.html)
+connect html file with js file.
+
+```
+<script src="bg.js"></script>
+```
+
+<br>
+<br>
+
+(images folder)
+put images in images folder which want to use as background.
+
+<br>
+<br>
+
+
+(bg.js)
+1. define body which is connected with html file and define IMG_NUMBER which means image numbers.
+
+```
+const body = document.querySelector("body");
+
+const IMG_NUMBER = 6;
+```
+
+<br>
+
+2. We want to initialize of painting background. So we defined function init() and called paintImage function which paints background.
+
+```
+function init() {
+    const randomNumber = genRandom();
+    paintImage(randomNumber);
+}
+
+init();
+```
+
+<br>
+
+3. Define genRandom() function which makes random number.
+
+* Math.random() : generate random number
+* Math.ceil() : raising decimal point
+* Math.floor() : decimal point lowering
+
+
+```
+function genRandom() {
+    const number = Math.floor(Math.random()*IMG_NUMBER);
+    return number;
+}
+```
+
+<br>
+
+
+4. Define paintImage function which prepends body of your background image
+
+```
+function paintImage(imgNumber){
+    const image = new Image();
+    image.src = `images/${imgNumber+1}.jpg`;
+    image.classList.add("bgImage");
+    body.prepend(image);
+   
+}
+```
+
+<br>
+
+5. Define handleImageLoad function.
+
+```
+function handleImgLoad() {
+    console.log("finished loading");
+}
+```
+
+<br>
+<br>
+
+
+(index.css)
+define keyframes fadeIn and gives animation in bgImage class.
+
+```
+@keyframes fadeIn{
+  from{
+    opacity : 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+
+.bgImage{
+  position : absolute;
+  top : 0;
+  left : 0;
+  width : 100%;
+  height: 100%;
+  z-index: -1;
+  animation : fadeIn .5s linear;
+}
+```
 
 <br>
 <br>
