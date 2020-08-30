@@ -5,8 +5,15 @@ body {
 h1{
     color:#f5f6fa;
     transition : color .5s ease-in-out;
+    text-align : center;
+    padding : 50px 20px;
 }
   
+
+ul{
+  color:#f5f6fa;
+}
+
 .clicked{
   color : #7f8c8d;
 } 
@@ -18,11 +25,24 @@ h1{
 .form, 
 .greetings {
   display : none;
+  
+  font-family : Chalkduster, fantasy;
+  text-align : center;
 }
 
-.showing {
+.showing,
+.toDoForm {
   display : block;
+  text-align : center;
 }
+
+.toDoList {
+  font-family : Comic Sans MS, Comic Sans, cursive;
+  color : #ffffff;
+  text-align : center;
+  padding : 10px 10px;
+}
+
 
 @keyframes fadeIn{
   from{
